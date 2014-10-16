@@ -1,0 +1,32 @@
+[
+  {
+    "model": "treat",
+    "items":[
+      {
+        "id": 1,
+        "name": "French Fries"
+      },
+      {
+        "id": 2,
+        "name": "Burgers"
+      },
+      {
+        "id": 3,
+        "name": "Popcorn Chicken"
+      }
+    ]
+  },
+  {
+    "model": "zoo",
+    "items":[
+      {
+        "id": 1,
+        "name": "Portland, ME Zoo"
+      },
+      {
+        "id": 2,
+        "name": "Portland, OR Zoo"
+      }
+    ]
+  }
+]

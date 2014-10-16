@@ -1,0 +1,38 @@
+{
+  "name": "bedwetter",
+  "version": "0.1.0",
+  "description": "Auto-generated, RESTful, CRUDdy route handlers for Waterline models in Hapi",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test-cov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devinivy/bedwetter"
+  },
+  "author": "Devin Ivy <devin@bigroomstudios.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devinivy/bedwetter/issues"
+  },
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "async": "~0.2.9",
+    "merge-defaults": "~0.1.0",
+    "boom": "~2.5.1",
+    "hoek": "2.x.x",
+    "call": "1.x.x",
+    "pluralize": "~0.0.5"
+  },
+  "peerDependencies": {
+    "hapi": "~7.x.x",
+    "dogwater": "~0.3.x"
+  },
+  "devDependencies": {
+    "hapi": "~7.x.x",
+    "dogwater": "~0.3.x",
+    "sails-memory": "^0.10.x",
+    "lab": "4.x.x"
+  },
+  "homepage": "https://github.com/devinivy/bedwetter"
+}
