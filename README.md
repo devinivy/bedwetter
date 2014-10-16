@@ -6,10 +6,10 @@ For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#/docume
 ## What it does
 Bedwetter registers route handlers based upon the `method` and `path` of your route.  It turns them into RESTful API endpoints that automatically interact with the model defined using dogwater.
 
-`POST` is used with `create` and `add` (add a record to a relation)
-`GET` is used with `find`, `findOne`, and `populate`
-`PUT` is used with `update`
-`DELETE` is used with `destroy` and `remove` (remove a record from a relation)
+- `POST` is used for `create` and `add` (add a record to a relation)
+- `GET` is used for `find`, `findOne`, and `populate` (populate a relation on a record)
+- `PUT` is used for `update`
+- `DELETE` is used for `destroy` and `remove` (remove a record from a relation)
 
 Short, crappy example of usage:
 ```javascript
