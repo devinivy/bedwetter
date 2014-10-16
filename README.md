@@ -1,7 +1,15 @@
 bedwetter
 ===
 Docs coming soon.  This is meant to be used with [hapi 7](https://github.com/hapijs/hapi) and it's [Waterline](https://github.com/balderdashy/waterline) plugin, [dogwater](https://github.com/devinivy/dogwater).
-For now, see Waterline's [documentation on Blueprints](http://sailsjs.org/#/documentation/reference/blueprint-api)
+For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#/documentation/reference/blueprint-api).  Much of the code has been adapted from the SailsJs Blueprints hook, but the features/options do differ a bit.
+
+## What it does
+Bedwetter registers route handlers based upon the `method` and `path` of your route.  It turns them into RESTful API endpoints that automatically interact with the model defined using dogwater.
+
+`POST` is used with `create` and `add` (add a record to a relation)
+`GET` is used with `find`, `findOne`, and `populate`
+`PUT` is used with `update`
+`DELETE` is used with `destroy` and `remove` (remove a record from a relation)
 
 Short, crappy example of usage:
 ```javascript

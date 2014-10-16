@@ -1,6 +1,6 @@
 {
   "name": "bedwetter",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Auto-generated, RESTful, CRUDdy route handlers for Waterline models in Hapi",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,15 @@
     "type": "git",
     "url": "https://github.com/devinivy/bedwetter"
   },
+  "keywords": [
+    "hapi",
+    "plugin",
+    "model",
+    "waterline",
+    "dogwater",
+    "rest",
+    "crud"
+  ],
   "author": "Devin Ivy <devin@bigroomstudios.com>",
   "license": "MIT",
   "bugs": {
