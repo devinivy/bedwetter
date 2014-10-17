@@ -65,8 +65,9 @@ Options can be passed to the plugin when registered or defined directly on the r
 
 * `values` (object).  Applies to `create`, `update`, and sometimes to `add`.  Sets default attribute values in key-value pairs for records to be created or updated.  Also includes a `blacklist` parameter:
   * `blacklist` (array)
-
+        
         An array of attribute names to be omitted when creating or updating a record.
+
 
 Short, crappy example of usage:
 ```javascript
