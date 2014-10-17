@@ -1,6 +1,6 @@
 bedwetter
 ===
-Docs coming soon.  This is meant to be used with [hapi 7](https://github.com/hapijs/hapi) and it's [Waterline](https://github.com/balderdashy/waterline) plugin, [dogwater](https://github.com/devinivy/dogwater).
+Docs coming soon.  This is meant to be used with [hapi 7](https://github.com/hapijs/hapi) and its [Waterline](https://github.com/balderdashy/waterline) plugin, [dogwater](https://github.com/devinivy/dogwater).
 For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#/documentation/reference/blueprint-api).  Much of the code has been adapted from the SailsJs Blueprints hook, but the features/options do differ a bit.
 
 ## What it does
