@@ -1,7 +1,8 @@
 bedwetter
 ===
-Docs coming soon.  This is meant to be used with [hapi 7](https://github.com/hapijs/hapi) and its [Waterline](https://github.com/balderdashy/waterline) plugin, [dogwater](https://github.com/devinivy/dogwater).
-For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#/documentation/reference/blueprint-api).  Much of the code has been adapted from the SailsJs Blueprints hook, but the features/options do differ a bit.
+Auto-generated, RESTful, CRUDdy route handlers...
+
+...to be used with [hapi 7](https://github.com/hapijs/hapi) and its [Waterline](https://github.com/balderdashy/waterline) plugin, [dogwater](https://github.com/devinivy/dogwater).
 
 ## What it does
 Bedwetter registers route handlers based upon the `method` and `path` of your route.  It turns them into RESTful API endpoints that automatically interact with the model defined using dogwater.  The route handler is based on one of eight bedwetters:
@@ -10,6 +11,52 @@ Bedwetter registers route handlers based upon the `method` and `path` of your ro
 - `GET` is used for `find`, `findOne`, and `populate` (populate a relation on a record)
 - `PUT` is used for `update`
 - `DELETE` is used for `destroy` and `remove` (remove a record from a relation)
+
+For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#/documentation/reference/blueprint-api) for info about parameters for the bedwetters.
+
+## Bedwetting Patterns
+Suppose users are associated with comments via dogwater/Waterline.  The user model associates comments in an attribute named `comments`.  Here are some examples as to how the plugin will deduce which of the eight bedwetters to use, based upon route method and path definition.
+
+* `GET /user` ↦ `find`
+
+    Returns an array of users with an `HTTP 200 OK` response.
+
+* `GET /user/{id}` ↦ `findOne`
+
+    Returns user `id` with an `HTTP 200 OK` response.  Responds with an `HTTP 404 Not Found` response if the user is not found.
+
+* `GET /user/{id}/comments` ↦ `populate`
+
+    Returns user `id` with its associated comments populated in an array.  Returns `HTTP 200 OK` if that user is found.  Returns an `HTTP 404 Not Found` response if that user is not found.
+
+* `GET /user/{id}/comments/{childId}` ↦ `populate`
+
+    Returns user `id` with comment `childId` populated in an array if it is associated with the user (otherwise the array is empty).  Returns `HTTP 200 OK` if that user and comment are found.  Returns an `HTTP 404 Not Found` response if that user is not found.
+
+* `POST /user` ↦ `create`
+
+    Creates a new user using the request payload and returns it with an `HTTP 201 Created` response.
+
+* `POST /user/{id}/comments` ↦ `add`
+
+    Creates a new comment using the request payload and associates that comment with user `id`.  Returns that comment with an `HTTP 201 Created response`.  If that user is not found, returns an `HTTP 404 Not Found` response.
+
+* `POST /user/{id}/comments/{childId}` ↦ `add`
+
+    Associates comment `childId` with user `id`.  Returns an `HTTP 204 No Content` response on success.  If the user or comment are not found, returns an `HTTP 404 Not Found` response.
+
+* `DELETE /user/{id}` ↦ `destroy`
+
+    Destroys user `id`.  Returns an `HTTP 204 No Content` response on success.  If the user doesn't exist, returns an `HTTP 404 Not Found` response.
+
+* `DELETE /user/{id}/comment/{childId}` ↦ `remove`
+
+    Removes association between user `id` and comment `childId`.  Returns an `HTTP 204 No Content` response on success.  If the user or comment doesn't exist, returns an `HTTP 404 Not Found` response.
+    
+* `PUT /user/{id}` ↦ `update`
+    
+    Updates user `id` using the request payload and responds with the updated user.  Returns an `HTTP 200 OK` response on success.  If the user doesn't exist, returns an `HTTP 404 Not Found` response.
+
 
 ## Options
 Options can be passed to the plugin when registered or defined directly on the route handler.  Those defined on the route handler override those passed to the plugin on a per-route basis.
