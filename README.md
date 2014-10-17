@@ -1,8 +1,8 @@
 bedwetter
 ===
-Auto-generated, RESTful, CRUDdy route handlers...
 
-...to be used with [hapi 7](https://github.com/hapijs/hapi) and its [Waterline](https://github.com/balderdashy/waterline) plugin, [dogwater](https://github.com/devinivy/dogwater).
+####Auto-generated, RESTful, CRUDdy route handlers
+to be used with [hapi 7](https://github.com/hapijs/hapi) and its [Waterline](https://github.com/balderdashy/waterline) plugin, [dogwater](https://github.com/devinivy/dogwater).
 
 ## What it does
 Bedwetter registers route handlers based upon the `method` and `path` of your route.  It turns them into RESTful API endpoints that automatically interact with the model defined using dogwater.  The route handler is based on one of eight bedwetters:
@@ -116,7 +116,9 @@ Options can be passed to the plugin when registered or defined directly on the r
         An array of attribute names to be omitted when creating or updating a record.
 
 
-Short, crappy example of usage:
+## Usage
+Here's a sort of crappy example.
+
 ```javascript
 // Assume `server` is a hapi server with the bedwetter plugin registered.
 // Models with identities "zoo" and "treat" exist via dogwater.
@@ -128,14 +130,14 @@ server.route([
     method: 'GET',
     path: '/zoo/{id}',
     handler: {
-        bedwetter: {}
+        bedwetter: options
     }
 },
 { // find
     method: 'GET',
     path: '/treat',
     handler: {
-        bedwetter: {}
+        bedwetter: options
     }
 },
 { // find with prefix
@@ -151,42 +153,42 @@ server.route([
     method: 'DELETE',
     path: '/treat/{id}',
     handler: {
-        bedwetter: {}
+        bedwetter: options
     }
 },
 { // create
     method: 'POST',
     path: '/zoo',
     handler: {
-        bedwetter: {}
+        bedwetter: options
     }
 },
 { // update
     method: 'PUT',
     path: '/treat/{id}',
     handler: {
-        bedwetter: {}
+        bedwetter: options
     }
 },
 { // remove
     method: 'DELETE',
-    path: '/zoo/{id}/treats/{child_id}',
+    path: '/zoo/{id}/treats/{childId}',
     handler: {
-        bedwetter: {}
+        bedwetter: options
     }
 },
-{ // adds
+{ // add
     method: 'POST',
-    path: '/zoo/{id}/treats/{child_id?}',
+    path: '/zoo/{id}/treats/{childId?}',
     handler: {
-        bedwetter: {}
+        bedwetter: options
     }
 },
-{ // populates
+{ // populate
     method: 'GET',
-    path: '/zoo/{id}/treats/{child_id?}',
+    path: '/zoo/{id}/treats/{childId?}',
     handler: {
-        bedwetter: {}
+        bedwetter: options
     }
 }]);
 ```
