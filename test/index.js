@@ -1,6 +1,7 @@
 // Load modules
 var Lab = require('lab');
 var Hapi = require('hapi');
+var Hoek = require('hoek');
 var Path = require('path');
 
 // Test shortcuts
@@ -33,10 +34,18 @@ experiment('Bedwet', function () {
         
         server = new Hapi.Server();
         
+        // Setup 
+        server.auth.scheme('custom', internals.implementation);
+        server.auth.strategy('default', 'custom', false, { animals: { steve: { id: 1 } } });
+        
         var plugins = [
         {
            plugin: require('..'),
-           options: {}
+           options: {
+                userModel: 'animals',
+                userIdProperty: 'animal.id',
+                userUrlPrefix: '/animal'
+           }
         },
         {
             plugin: require('dogwater'),
@@ -71,6 +80,16 @@ experiment('Bedwet', function () {
             .spread(function(maineZoo, oregonZoo) {
                 
                 server.route([
+                { // findOne acting as user
+                    method: 'GET',
+                    path: '/animal',
+                    config: {auth: 'default'},
+                    handler: {
+                        bedwetter: {
+                            actAsUser: true
+                        }
+                    }
+                },
                 { // findOne
                     method: 'GET',
                     path: '/zoo/{id}',
@@ -166,6 +185,24 @@ experiment('Bedwet', function () {
             expect(res.statusCode).to.equal(200);
             expect(res.result).to.be.an.object;
             expect(res.result.treats).to.be.an.array;
+            //console.log(res.statusCode, res.result);
+            
+            done();
+        })
+        
+    });
+    
+    test('finds one acting as user.', function (done) {
+        
+        server.inject({
+            method: 'GET',
+            url: '/animal',
+            headers: { authorization: 'Custom steve' }
+        }, function(res) {
+            
+            expect(res.statusCode).to.equal(200);
+            expect(res.result).to.be.an.object;
+            expect(res.result.id).to.equal(1);
             //console.log(res.statusCode, res.result);
             
             done();
@@ -383,3 +420,44 @@ experiment('Bedwet', function () {
     
     
 });
+
+var internals = {};
+
+
+internals.implementation = function (server, options) {
+
+    var settings = Hoek.clone(options);
+
+    var scheme = {
+        authenticate: function (request, reply) {
+
+            var req = request.raw.req;
+            var authorization = req.headers.authorization;
+            if (!authorization) {
+                return reply(Boom.unauthorized(null, 'Custom'));
+            }
+
+            var parts = authorization.split(/\s+/);
+            if (parts.length !== 2) {
+                return reply(true);
+            }
+
+            var username = parts[1];
+            var credentials = {};
+            
+            credentials.animal = settings.animals[username];
+
+            if (!credentials) {
+                return reply(Boom.unauthorized('Missing credentials', 'Custom'));
+            }
+
+            if (typeof credentials === 'string') {
+                return reply(credentials);
+            }
+
+            return reply(null, { credentials: credentials });
+        }
+    };
+
+    return scheme;
+};

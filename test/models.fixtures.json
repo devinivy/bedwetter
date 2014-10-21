@@ -28,5 +28,14 @@
         "name": "Portland, OR Zoo"
       }
     ]
+  },
+  {
+    "model": "animals",
+    "items" : [
+      {
+        "id": 1,
+        "type": "Doggie"
+      }
+    ]
   }
 ]

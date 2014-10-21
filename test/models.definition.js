@@ -2,6 +2,7 @@ module.exports = [
     {
         identity: 'treat',
         connection: 'testing',
+        schema: true,
         
         attributes: {
             name: 'string',
@@ -15,6 +16,7 @@ module.exports = [
     {
         identity: 'zoo',
         connection: 'testing',
+        schema: true,
         
         attributes: {
             name: 'string',
@@ -23,6 +25,15 @@ module.exports = [
                 via: 'owner',
                 dominant: true
             }
+        }
+    },
+    {
+        identity: 'animals', // (users)
+        connection: 'testing',
+        schema: true,
+        
+        attributes: {
+            type: 'string'
         }
     }
 ];
