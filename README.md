@@ -7,9 +7,10 @@ to be used with [hapi 7](https://github.com/hapijs/hapi) and its [Waterline](htt
 ## What it does
 Bedwetter registers route handlers based upon the `method` and `path` of your route.  It turns them into RESTful API endpoints that automatically interact with the model defined using dogwater.  The route handler is based on one of eight bedwetters:
 
-- `POST` is used for `create` and `add` (add a record to a relation)
-- `GET` is used for `find`, `findOne`, and `populate` (populate a relation on a record)
-- `PUT` is used for `update`
+- `POST` is used for `create`, `add` when `add` is used to create a record then add it to a relation, and for `update`
+- `PATCH` is also used for `update`
+- `PUT` is used for `add` when it's used to simply add a record to a relation
+- `GET` is used for `find`, `findOne`, and `populate` (get related records or check an association)
 - `DELETE` is used for `destroy` and `remove` (remove a record from a relation)
 
 For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#/documentation/reference/blueprint-api) for info about parameters for the bedwetters.
@@ -41,7 +42,7 @@ Suppose users are associated with comments via dogwater/Waterline.  The user mod
 
     Creates a new comment using the request payload and associates that comment with user `id`.  Returns that comment with an `HTTP 201 Created response`.  If that user is not found, returns an `HTTP 404 Not Found` response.
 
-* `POST /user/{id}/comments/{childId}` ↦ `add`
+* `PUT /user/{id}/comments/{childId}` ↦ `add`
 
     Associates comment `childId` with user `id`.  Returns an `HTTP 204 No Content` response on success.  If the user or comment are not found, returns an `HTTP 404 Not Found` response.
 
@@ -53,9 +54,9 @@ Suppose users are associated with comments via dogwater/Waterline.  The user mod
 
     Removes association between user `id` and comment `childId`.  Returns an `HTTP 204 No Content` response on success.  If the user or comment doesn't exist, returns an `HTTP 404 Not Found` response.
     
-* `PUT /user/{id}` ↦ `update`
+* `PATCH /user/{id}` or `PATCH /user/{id}` ↦ `update`
     
-    Updates user `id` using the request payload and responds with the updated user.  Returns an `HTTP 200 OK` response on success.  If the user doesn't exist, returns an `HTTP 404 Not Found` response.
+    Updates user `id` using the request payload (which will typically only contain the attributes to update) and responds with the updated user.  Returns an `HTTP 200 OK` response on success.  If the user doesn't exist, returns an `HTTP 404 Not Found` response.
 
 
 ## Options
@@ -164,7 +165,7 @@ server.route([
     }
 },
 { // update
-    method: 'PUT',
+    method: ['PATCH', 'POST'],
     path: '/treat/{id}',
     handler: {
         bedwetter: options
@@ -177,9 +178,16 @@ server.route([
         bedwetter: options
     }
 },
-{ // add
+{ // create then add
     method: 'POST',
-    path: '/zoo/{id}/treats/{childId?}',
+    path: '/zoo/{id}/treats',
+    handler: {
+        bedwetter: options
+    }
+},
+{ // add
+    method: 'PUT',
+    path: '/zoo/{id}/treats/{childId}',
     handler: {
         bedwetter: options
     }
