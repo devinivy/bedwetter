@@ -300,10 +300,11 @@ experiment('Bedwet', function () {
         
         server.inject({
             method: 'GET',
-            url: '/zoo/2/treats',
+            url: '/zoo/1/treats',
         }, function(res) {
             
             expect(res.statusCode).to.equal(200);
+            expect(res.result.treats).to.have.length(2);
             //console.log(res.statusCode, res.result);
             
             done();
@@ -315,10 +316,11 @@ experiment('Bedwet', function () {
         
         server.inject({
             method: 'GET',
-            url: '/zoo/2/treats/1',
+            url: '/zoo/1/treats/2',
         }, function(res) {
             
             expect(res.statusCode).to.equal(200);
+            expect(res.result.treats).to.have.length(1);
             //console.log(res.statusCode, res.result);
             
             done();
