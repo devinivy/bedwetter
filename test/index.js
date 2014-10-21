@@ -109,7 +109,7 @@ experiment('Bedwet', function () {
                     }
                 },
                 { // update
-                    method: 'PUT',
+                    method: ['PATCH', 'POST'],
                     path: '/treat/{id}',
                     handler: {
                         bedwetter: {}
@@ -122,9 +122,16 @@ experiment('Bedwet', function () {
                         bedwetter: {}
                     }
                 },
-                { // adds
+                { // adds a relation
+                    method: 'PUT',
+                    path: '/zoo/{id}/treats/{child_id}',
+                    handler: {
+                        bedwetter: {}
+                    }
+                },
+                { // adds and creates
                     method: 'POST',
-                    path: '/zoo/{id}/treats/{child_id?}',
+                    path: '/zoo/{id}/treats',
                     handler: {
                         bedwetter: {}
                     }
@@ -157,6 +164,8 @@ experiment('Bedwet', function () {
         }, function(res) {
             
             expect(res.statusCode).to.equal(200);
+            expect(res.result).to.be.an.object;
+            expect(res.result.treats).to.be.an.array;
             //console.log(res.statusCode, res.result);
             
             done();
@@ -172,6 +181,7 @@ experiment('Bedwet', function () {
         }, function(res) {
             
             expect(res.statusCode).to.equal(200);
+            expect(res.result).to.be.an.array;
             //console.log(res.statusCode, res.result);
             
             done();
@@ -187,6 +197,7 @@ experiment('Bedwet', function () {
         }, function(res) {
             
             expect(res.statusCode).to.equal(200);
+            expect(res.result).to.be.an.array;
             // console.log(res.statusCode, res.result);
             
             done();
@@ -221,6 +232,8 @@ experiment('Bedwet', function () {
         }, function(res) {
             
             expect(res.statusCode).to.equal(201);
+            expect(res.result).to.be.an.object;
+            expect(res.result.name).to.equal("Big Room Studios");
             //console.log(res.statusCode, res.result);
             
             done();
@@ -228,10 +241,30 @@ experiment('Bedwet', function () {
         
     });
     
-    test('updates.', function (done) {
+    test('updates with post.', function (done) {
         
         server.inject({
-            method: 'PUT',
+            method: 'PATCH',
+            url: '/treat/2',
+            payload: {
+                name: "Fried BOreos"
+            }
+        }, function(res) {
+            
+            expect(res.statusCode).to.equal(200);
+            expect(res.result).to.be.an.object;
+            expect(res.result.name).to.equal("Fried BOreos");
+            //console.log(res.statusCode, res.result);
+            
+            done();
+        })
+        
+    });
+    
+    test('updates with patch.', function (done) {
+        
+        server.inject({
+            method: 'PATCH',
             url: '/treat/2',
             payload: {
                 name: "Fried Oreos"
@@ -239,6 +272,8 @@ experiment('Bedwet', function () {
         }, function(res) {
             
             expect(res.statusCode).to.equal(200);
+            expect(res.result).to.be.an.object;
+            expect(res.result.name).to.equal("Fried Oreos");
             //console.log(res.statusCode, res.result);
             
             done();
@@ -273,6 +308,8 @@ experiment('Bedwet', function () {
         }, function(res) {
             
             expect(res.statusCode).to.equal(201);
+            expect(res.result).to.be.an.object;
+            expect(res.result.name).to.equal("Fig Newtons");
             //console.log(res.statusCode, res.result);
             
             done();
@@ -283,7 +320,7 @@ experiment('Bedwet', function () {
     test('adds.', function (done) {
         
         server.inject({
-            method: 'POST',
+            method: 'PUT',
             url: '/zoo/2/treats/1',
         }, function(res) {
             
@@ -304,7 +341,8 @@ experiment('Bedwet', function () {
         }, function(res) {
             
             expect(res.statusCode).to.equal(200);
-            expect(res.result.treats).to.have.length(2);
+            expect(res.result).to.be.an.array;
+            expect(res.result).to.have.length(2);
             //console.log(res.statusCode, res.result);
             
             done();
@@ -312,20 +350,36 @@ experiment('Bedwet', function () {
         
     });
     
-    test('populates one.', function (done) {
+    test('acknowledges an association.', function (done) {
         
         server.inject({
             method: 'GET',
             url: '/zoo/1/treats/2',
         }, function(res) {
             
-            expect(res.statusCode).to.equal(200);
-            expect(res.result.treats).to.have.length(1);
+            expect(res.statusCode).to.equal(204);
+            expect(res.result).to.be.null;
             //console.log(res.statusCode, res.result);
             
             done();
         })
         
     });
+    
+    test('acknowledges a non-association.', function (done) {
+        
+        server.inject({
+            method: 'GET',
+            url: '/zoo/1/treats/666',
+        }, function(res) {
+            
+            expect(res.statusCode).to.equal(404);
+            //console.log(res.statusCode, res.result);
+            
+            done();
+        })
+        
+    });
+    
     
 });
