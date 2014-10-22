@@ -28,11 +28,11 @@ Suppose users are associated with comments via dogwater/Waterline.  The user mod
 
 * `GET /user/{id}/comments` ↦ `populate`
 
-    Returns user `id` with its associated comments populated in an array.  Returns `HTTP 200 OK` if that user is found.  Returns an `HTTP 404 Not Found` response if that user is not found.
+    Returns an array of comments associated with user `id`.  Returns `HTTP 200 OK` if that user is found.  Returns an `HTTP 404 Not Found` response if that user is not found.
 
 * `GET /user/{id}/comments/{childId}` ↦ `populate`
 
-    Returns user `id` with comment `childId` populated in an array if it is associated with the user (otherwise the array is empty).  Returns `HTTP 200 OK` if that user and comment are found.  Returns an `HTTP 404 Not Found` response if that user is not found.
+    Returns `HTTP 204 No Content` if comment `childId` is associated with user `id`.  Returns an `HTTP 404 Not Found` response if that user is not found or that comment is not associated with the user.
 
 * `POST /user` ↦ `create`
 
@@ -54,7 +54,7 @@ Suppose users are associated with comments via dogwater/Waterline.  The user mod
 
     Removes association between user `id` and comment `childId`.  Returns an `HTTP 204 No Content` response on success.  If the user or comment doesn't exist, returns an `HTTP 404 Not Found` response.
     
-* `PATCH /user/{id}` or `PATCH /user/{id}` ↦ `update`
+* `PATCH /user/{id}` or `POST /user/{id}` ↦ `update`
     
     Updates user `id` using the request payload (which will typically only contain the attributes to update) and responds with the updated user.  Returns an `HTTP 200 OK` response on success.  If the user doesn't exist, returns an `HTTP 404 Not Found` response.
 
