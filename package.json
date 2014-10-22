@@ -1,6 +1,6 @@
 {
   "name": "bedwetter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Auto-generated, RESTful, CRUDdy route handlers for Waterline models in Hapi",
   "main": "index.js",
   "scripts": {
@@ -41,7 +41,8 @@
     "hapi": "~7.x.x",
     "dogwater": "~0.3.x",
     "sails-memory": "^0.10.x",
-    "lab": "4.x.x"
+    "lab": "4.x.x",
+    "async": "0.9.0"
   },
   "homepage": "https://github.com/devinivy/bedwetter"
 }

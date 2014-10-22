@@ -63,8 +63,8 @@ module.exports = function(server, pluginOpts, cb) {
                 
             })
             .spread(function(maineZoo, oregonZoo) {
-                
-                cb(null);
+                //console.log(maineZoo, oregonZoo);
+                cb();
             })
             .catch(function(err) {
                 
