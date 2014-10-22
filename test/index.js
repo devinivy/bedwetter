@@ -1,8 +1,9 @@
 // Load modules
 var Lab = require('lab');
-var Hapi = require('hapi');
 var Hoek = require('hoek');
 var Path = require('path');
+var Hapi = require('hapi')
+var ServerSetup = require('./server.setup.js');
 
 // Test shortcuts
 var lab = exports.lab = Lab.script();
@@ -15,163 +16,104 @@ var test = lab.test;
 experiment('Bedwetter', function () {
     
     // This will be a Hapi server for each test.
-    var server;
-    
-    // Setup dummy connections/adapters.
-    var connections = {
-        'testing': {
-            adapter: 'memory'
-        }
-    };
-    
-    // Setup adapters for testing fixtures.
-    var adapters = { memory: require('sails-memory') };
-    var modelsFile = './models.definition.js';
-    var fixturesFile = './models.fixtures.json';
+    var server = new Hapi.Server();
 
     // Setup Hapi server to register the plugin
     before(function(done){
         
-        server = new Hapi.Server();
-        
-        // Setup 
-        server.auth.scheme('custom', internals.implementation);
-        server.auth.strategy('default', 'custom', false, { animals: { steve: { id: 1 } } });
-        
-        var plugins = [
-        {
-           plugin: require('..'),
-           options: {
-                userModel: 'animals',
-                userIdProperty: 'animal.id',
-                userUrlPrefix: '/animal'
-           }
-        },
-        {
-            plugin: require('dogwater'),
-            options: {
-                connections: connections,
-                adapters: adapters,
-                models: Path.normalize(__dirname + '/' + modelsFile),
-                data: {
-                    fixtures: require('./models.fixtures.json')
+        ServerSetup(server, {
+            userModel: 'animals',
+            userIdProperty: 'animal.id',
+            userUrlPrefix: '/animal'
+        }, function(err) {
+            
+            if (err) done(err);
+            
+            server.route([
+            { // findOne acting as user
+                method: 'GET',
+                path: '/animal',
+                config: {auth: 'default'},
+                handler: {
+                    bedwetter: {
+                        actAsUser: true
+                    }
                 }
-            }
-        }];
-        
-        server.pack.register(plugins, function (err) {
+            },
+            { // findOne
+                method: 'GET',
+                path: '/zoo/{id}',
+                handler: {
+                    bedwetter: {}
+                }
+            },
+            { // find
+                method: 'GET',
+                path: '/treat',
+                handler: {
+                    bedwetter: {}
+                }
+            },
+            { // find with prefix
+                method: 'GET',
+                path: '/v1/treat',
+                handler: {
+                    bedwetter: {
+                        prefix: '/v1'
+                    }
+                }
+            },
+            { // destroy
+                method: 'DELETE',
+                path: '/treat/{id}',
+                handler: {
+                    bedwetter: {}
+                }
+            },
+            { // create
+                method: 'POST',
+                path: '/zoo',
+                handler: {
+                    bedwetter: {}
+                }
+            },
+            { // update
+                method: ['PATCH', 'POST'],
+                path: '/treat/{id}',
+                handler: {
+                    bedwetter: {}
+                }
+            },
+            { // remove
+                method: 'DELETE',
+                path: '/zoo/{id}/treats/{child_id}',
+                handler: {
+                    bedwetter: {}
+                }
+            },
+            { // adds a relation
+                method: 'PUT',
+                path: '/zoo/{id}/treats/{child_id}',
+                handler: {
+                    bedwetter: {}
+                }
+            },
+            { // adds and creates
+                method: 'POST',
+                path: '/zoo/{id}/treats',
+                handler: {
+                    bedwetter: {}
+                }
+            },
+            { // populates
+                method: 'GET',
+                path: '/zoo/{id}/treats/{child_id?}',
+                handler: {
+                    bedwetter: {}
+                }
+            }]);
             
-            expect(err).to.not.exist;
-            
-            var Zoo = server.plugins.dogwater.zoo;
-            
-            Zoo.find()
-            .then(function(zoos) {
-                
-                // Create some associations
-                zoos[0].treats.add(1);
-                zoos[0].treats.add(2);
-                zoos[1].treats.add(2);
-                zoos[1].treats.add(3);
-                
-                return [zoos[0].save(), zoos[1].save()];
-                
-            })
-            .spread(function(maineZoo, oregonZoo) {
-                
-                server.route([
-                { // findOne acting as user
-                    method: 'GET',
-                    path: '/animal',
-                    config: {auth: 'default'},
-                    handler: {
-                        bedwetter: {
-                            actAsUser: true
-                        }
-                    }
-                },
-                { // findOne
-                    method: 'GET',
-                    path: '/zoo/{id}',
-                    handler: {
-                        bedwetter: {}
-                    }
-                },
-                { // find
-                    method: 'GET',
-                    path: '/treat',
-                    handler: {
-                        bedwetter: {}
-                    }
-                },
-                { // find with prefix
-                    method: 'GET',
-                    path: '/v1/treat',
-                    handler: {
-                        bedwetter: {
-                            prefix: '/v1'
-                        }
-                    }
-                },
-                { // destroy
-                    method: 'DELETE',
-                    path: '/treat/{id}',
-                    handler: {
-                        bedwetter: {}
-                    }
-                },
-                { // create
-                    method: 'POST',
-                    path: '/zoo',
-                    handler: {
-                        bedwetter: {}
-                    }
-                },
-                { // update
-                    method: ['PATCH', 'POST'],
-                    path: '/treat/{id}',
-                    handler: {
-                        bedwetter: {}
-                    }
-                },
-                { // remove
-                    method: 'DELETE',
-                    path: '/zoo/{id}/treats/{child_id}',
-                    handler: {
-                        bedwetter: {}
-                    }
-                },
-                { // adds a relation
-                    method: 'PUT',
-                    path: '/zoo/{id}/treats/{child_id}',
-                    handler: {
-                        bedwetter: {}
-                    }
-                },
-                { // adds and creates
-                    method: 'POST',
-                    path: '/zoo/{id}/treats',
-                    handler: {
-                        bedwetter: {}
-                    }
-                },
-                { // populates
-                    method: 'GET',
-                    path: '/zoo/{id}/treats/{child_id?}',
-                    handler: {
-                        bedwetter: {}
-                    }
-                }]);
-                
-                done();
-                
-            })
-            .fail(function(err) {
-                
-                done(err);
-            });
-            
-
+            done();
         });
     });
     
@@ -421,43 +363,4 @@ experiment('Bedwetter', function () {
     
 });
 
-var internals = {};
 
-
-internals.implementation = function (server, options) {
-
-    var settings = Hoek.clone(options);
-
-    var scheme = {
-        authenticate: function (request, reply) {
-
-            var req = request.raw.req;
-            var authorization = req.headers.authorization;
-            if (!authorization) {
-                return reply(Boom.unauthorized(null, 'Custom'));
-            }
-
-            var parts = authorization.split(/\s+/);
-            if (parts.length !== 2) {
-                return reply(true);
-            }
-
-            var username = parts[1];
-            var credentials = {};
-            
-            credentials.animal = settings.animals[username];
-
-            if (!credentials) {
-                return reply(Boom.unauthorized('Missing credentials', 'Custom'));
-            }
-
-            if (typeof credentials === 'string') {
-                return reply(credentials);
-            }
-
-            return reply(null, { credentials: credentials });
-        }
-    };
-
-    return scheme;
-};
