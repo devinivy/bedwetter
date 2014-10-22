@@ -12,7 +12,7 @@ var experiment = lab.experiment;
 var test = lab.test;
 
 
-experiment('Bedwet', function () {
+experiment('Bedwetter', function () {
     
     // This will be a Hapi server for each test.
     var server;
