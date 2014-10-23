@@ -88,24 +88,6 @@ experiment('FindOne bedwetter', function () {
         
     });
     
-    test('finds one acting as user.', function (done) {
-        
-        server.inject({
-            method: 'GET',
-            url: '/animal',
-            headers: { authorization: 'Custom steve' }
-        }, function(res) {
-            
-            expect(res.statusCode).to.equal(200);
-            expect(res.result).to.be.an.object;
-            expect(res.result.id).to.equal(1);
-            //console.log(res.statusCode, res.result);
-            
-            done();
-        })
-        
-    });
-    
     after(function(done) {
         
         var orm = server.plugins.dogwater.zoo.waterline;

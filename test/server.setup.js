@@ -25,7 +25,7 @@ module.exports = function(server, pluginOpts, cb) {
     
         // Setup 
         server.auth.scheme('custom', require('./auth.scheme.js'));
-        server.auth.strategy('default', 'custom', false, { animals: { steve: { id: 1 } } });
+        server.auth.strategy('default', 'custom', false, { animals: { Doggie: {id:1}, Kitty: {id:2} } });
         
         var plugins = [
         {
@@ -46,31 +46,7 @@ module.exports = function(server, pluginOpts, cb) {
         
         server.pack.register(plugins, function (err) {
             
-            if (err) cb(err);
-            
-            var Zoo = server.plugins.dogwater.zoo;
-            
-            Zoo.find()
-            .then(function(zoos) {
-                
-                // Create some associations
-                zoos[0].treats.add(1);
-                zoos[0].treats.add(2);
-                zoos[1].treats.add(2);
-                zoos[1].treats.add(3);
-                
-                return [zoos[0].save(), zoos[1].save()];
-                
-            })
-            .spread(function(maineZoo, oregonZoo) {
-                //console.log(maineZoo, oregonZoo);
-                cb();
-            })
-            .catch(function(err) {
-                
-                cb(err);
-            });
-            
+            cb(err);
         });
         
 }

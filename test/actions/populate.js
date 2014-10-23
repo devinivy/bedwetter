@@ -35,7 +35,7 @@ experiment('Populate bedwetter', function () {
             server.route([
             { // populates
                 method: 'GET',
-                path: '/zoo/{id}/treats/{child_id?}',
+                path: '/zoo/{id}/treats/{childId?}',
                 handler: {
                     bedwetter: {}
                 }
@@ -52,10 +52,10 @@ experiment('Populate bedwetter', function () {
             url: '/zoo/1/treats',
         }, function(res) {
             
+            //console.log(res.statusCode, res.result);
             expect(res.statusCode).to.equal(200);
             expect(res.result).to.be.an.array;
             expect(res.result).to.have.length(2);
-            //console.log(res.statusCode, res.result);
             
             done();
         })

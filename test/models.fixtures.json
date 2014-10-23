@@ -4,15 +4,18 @@
     "items":[
       {
         "id": 1,
-        "name": "French Fries"
+        "name": "French Fries",
+        "animalOwner": 2
       },
       {
         "id": 2,
-        "name": "Burgers"
+        "name": "Burgers",
+        "animalOwner": 1
       },
       {
         "id": 3,
-        "name": "Popcorn Chicken"
+        "name": "Popcorn Chicken",
+        "animalOwner": 1
       }
     ]
   },
@@ -31,10 +34,35 @@
   },
   {
     "model": "animals",
-    "items" : [
+    "items": [
       {
         "id": 1,
-        "type": "Doggie"
+        "species": "Doggie"
+      },
+      {
+        "id": 2,
+        "species": "Kitty"
+      }
+    ]
+  },
+  {
+    "model": "treat_place__zoo_treats",
+    "items": [
+      {
+        "treat_place": 1,
+        "zoo_treats": 1
+      },
+      {
+        "treat_place": 2,
+        "zoo_treats": 1
+      },
+      {
+        "treat_place": 2,
+        "zoo_treats": 2
+      },
+      {
+        "treat_place": 3,
+        "zoo_treats": 2
       }
     ]
   }

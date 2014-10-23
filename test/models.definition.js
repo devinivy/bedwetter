@@ -7,9 +7,12 @@ module.exports = [
         attributes: {
             name: 'string',
             calories: 'integer',
-            owner: {
+            place: {
                 collection: 'zoo',
                 via: 'treats'
+            },
+            animalOwner: {
+                model: 'animals'
             }
         }
     },
@@ -22,7 +25,7 @@ module.exports = [
             name: 'string',
             treats: {
                 collection: 'treat',
-                via: 'owner',
+                via: 'place',
                 dominant: true
             }
         }
@@ -33,7 +36,11 @@ module.exports = [
         schema: true,
         
         attributes: {
-            type: 'string'
+            species: 'string',
+            treats: {
+                collection: 'treat',
+                via: 'animalOwner'
+            }
         }
     }
 ];

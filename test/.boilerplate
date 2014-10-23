@@ -1,0 +1,85 @@
+// Load modules
+var Lab = require('lab');
+var Hapi = require('hapi')
+var Async = require('async')
+var ServerSetup = require('../server.setup.js'); /* Adjust this path as necessary */
+
+// Test shortcuts
+var lab = exports.lab = Lab.script();
+var expect = Lab.expect;
+var before = lab.before;
+var after = lab.after;
+var experiment = lab.experiment;
+var test = lab.test;
+
+/* ^^^ Get rid of aliases you don't use ^^^ */
+
+experiment('Something', function () {
+    
+    // This will be a Hapi server for each test.
+    var server = new Hapi.Server();
+
+    // Setup Hapi server to register the plugin
+    before(function(done){
+        
+        ServerSetup(server, {/* Plugin options */}, function(err) {
+            
+            if (err) done(err);
+            
+            server.route([
+            { /* Create some routes */
+                method: 'GET',
+                path: '/zoo',
+                handler: {
+                    bedwetter: {}
+                }
+            }]);
+            
+            done();
+        });
+    });
+    
+    test('does something.', function (done) {
+        
+        server.inject({ /* Test a route! */
+            method: 'GET',
+            url: '/zoo',
+        }, function(res) {
+            
+            /* See if the result is what it should be */
+            
+            done();
+        });
+        
+    });
+    
+    after(function(done) {
+        
+        var orm = server.plugins.dogwater.zoo.waterline;
+        
+        /* Take each connection used by the orm... */
+        Async.each(Object.keys(orm.connections), function(key, cbDone) {
+            
+            var adapter = orm.connections[key]._adapter;
+            
+            /* ... and use the relevant adapter to kill it. */
+            if (typeof adapter.teardown === "function") {
+                
+                adapter.teardown(function(err) {
+                    cbDone(err);
+                });
+                
+            } else {
+                cbDone();
+            }
+            
+        },
+        function (err) {
+            done(err);
+        });
+        
+    });
+    
+});
+
+
