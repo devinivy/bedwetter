@@ -13,7 +13,10 @@ Bedwetter registers route handlers based upon the `method` and `path` of your ro
 - `GET` is used for `find`, `findOne`, and `populate` (get related records or check an association)
 - `DELETE` is used for `destroy` and `remove` (remove a record from a relation)
 
-For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#/documentation/reference/blueprint-api) for info about parameters for the bedwetters.
+For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#/documentation/reference/blueprint-api) for info about parameters for the bedwetters.  A portion of the code is adapted from this SailsJs hook.
+
+Bedwetter also allows you to manage resources/records with owners.  There are options to act on behalf of a user via hapi authentication.  You can set owners automatically on new records, only display records when owned by the authenticated user, and make bedwetters behave like the primary record is the authenticated user.
+
 
 ## Bedwetting Patterns
 Suppose users are associated with comments via dogwater/Waterline.  The user model associates comments in an attribute named `comments`.  Here are some examples as to how the plugin will deduce which of the eight bedwetters to use, based upon route method and path definition.
@@ -61,6 +64,43 @@ Suppose users are associated with comments via dogwater/Waterline.  The user mod
 
 ## Options
 Options can be passed to the plugin when registered or defined directly on the route handler.  Those defined on the route handler override those passed to the plugin on a per-route basis.
+
+### Acting as a User
+These options allow you to act on behalf of the authenticated user.  Typically the user info is taken directly off the credentials object without checking the `Request.auth.isAuthenticated` flag.  This allows you to use authentication modes however you wish.  For examples, for now please see tests at `test/options/actAsUser.js`.
+
+* `actAsUser` (boolean, defaults `false`).  Applies to `findOne`, `find`, `create`, `update`, `destroy`, `add`, `remove`, and `populate`.
+
+    This must be set to `true` for the following options in the section to take effect.  The acting user is defined by hapi authentication credentials and the `userIdProperty` option.
+
+* `userIdProperty` (string, defaults `"id"`).  Applies to `findOne`, `find`, `create`, `update`, `destroy`, `add`, `remove`, and `populate`.
+
+    When `actAsUser` is `true` this option takes effect.  It defines a path into `Request.auth.credentials` to determine the acting user's id.  For example, if the credentials object equals `{user: {info: {id: 17}}}` then `"user.info.id"` would grab user id `17`.  See [`Hoek.reach`](https://github.com/hapijs/hoek#reachobj-chain-options), which is used to convert the string to a deep property in the hapi credentials object.
+
+* `userUrlPrefix` (string, defaults `"/user"`).  Applies to `findOne`, `update`, `destroy`, `add`, `remove`, and `populate`.
+
+    When `actAsUser` is `true` this option takes effect.  This option works in tandem with `userModel`.  When a route path begins with `userUrlPrefix` (after any other inert prefix has been stripped via the `prefix` option), the URL is transformed to begin `/:userModel/:actingUserId` before matching for a bedwetter; it essentially sets the primary record to the acting user.
+
+* `userModel` (string, defaults `"users"`).  Applies to `findOne`, `update`, `destroy`, `add`, `remove`, and `populate`.
+
+    When `actAsUser` is `true` this option takes effect.  This option works in tandem with `userUrlPrefix`.  When a route path begins with `userUrlPrefix` (after any other inert prefix has been stripped via the `prefix` option), the URL is transformed to begin `/:userModel/:actingUserId` before matching for a bedwetter; it essentially sets the primary record to the acting user.  E.g., by default when `actAsUser` is enabled, route path `PUT /user/following/10` would internally be considered as `PUT /users/17/following/10`, which corresponds to the `add` bedwetter applied to the authenticated user.
+
+* `requireOwner` (boolean, defaults `false`). Applies to `findOne`, `find`, `create`, `update`, `destroy`, `add`, `remove`, and `populate`.
+
+    When `actAsUser` is `true` this option takes effect.  The option forces any record to that's being viewed or modified (including associations) to be owned by the user.  Ownership is determined by matching the acting user's id against the attribute of the record determined by `ownerAttr` or `childOwnerAttr`.
+
+* `setOwner` (boolean, defaults `false`). Applies to `create`, `update`, `add`.
+
+    When `actAsUser` is `true` this option takes effect.  The option forces any record to that's being created or updated (including associated records) to be owned by the acting user.  The owner is set on the  record's attribute determined by `ownerAttr` or `childOwnerAttr`.
+
+* `ownerAttr` (string or `false`, defaults `"owner"`).  Applies to `findOne`, `find`, `update`, `destroy`, `add`, `remove`, and `populate`.
+
+    When `actAsUser` is `true` this option takes effect.  If `false`, `requireOwner` and `setOwner` are disabled on the primary record.  Otherwise, `requireOwner` and `setOwner` options act using the primary record's attribute with name specified by `ownerAttr`.
+
+* `childOwnerAttr` (string or `false`, defaults `"owner"`).  Applies to `add`, `remove`, and `populate`.
+
+    When `actAsUser` is `true` this option takes effect.  If `false`, `requireOwner` and `setOwner` are disabled on the child record.  Otherwise, `requireOwner` and `setOwner` options act using the child record's attribute with name specified by `childOwnerAttr`.
+
+### Other Options
 
 * `prefix` (string).  Applies to `findOne`, `find`, `create`, `update`, `destroy`, `add`, `remove`, and `populate`.
 
