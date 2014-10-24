@@ -181,6 +181,18 @@ experiment('actAsUser option', function () {
                 handler: {
                     bedwetter: {}
                 }
+            },
+            { // Get a particular animal (user)
+                method: 'GET',
+                path: '/animals/{id}',
+                config: {
+                    auth: {
+                        strategy: 'default'
+                    }
+                },
+                handler: {
+                    bedwetter: {}
+                }
             }]);
             
             done();
@@ -498,6 +510,25 @@ experiment('actAsUser option', function () {
             expect(res.result).to.be.an.object;
             expect(res.result.animalOwner).to.equal(1);
             expect(res.result.name).to.equal("Fried Pickles");
+            //console.log(res.statusCode, res.result);
+            
+            done();
+        });
+        
+    });
+    
+    test('(findOne) does not automatically set primary record on a normal users path.', function (done) {
+        
+        server.inject({
+            method: 'GET',
+            url: '/animals/1',
+            headers: { authorization: 'Custom Kitty' } // id: 2
+        }, function(res) {
+            
+            expect(res.statusCode).to.equal(200);
+            expect(res.result).to.be.an.object;
+            expect(res.result.id).to.equal(1);
+            expect(res.result.species).to.equal("Doggie");
             //console.log(res.statusCode, res.result);
             
             done();
