@@ -21,43 +21,43 @@ Bedwetter also allows you to manage resources/records with owners.  There are op
 ## Bedwetting Patterns
 Suppose users are associated with comments via dogwater/Waterline.  The user model associates comments in an attribute named `comments`.  Here are some examples as to how the plugin will deduce which of the eight bedwetters to use, based upon route method and path definition.
 
-* `GET /user` ↦ `find`
+* `GET /users` ↦ `find`
 
     Returns an array of users with an `HTTP 200 OK` response.
 
-* `GET /user/{id}` ↦ `findOne`
+* `GET /users/{id}` ↦ `findOne`
 
     Returns user `id` with an `HTTP 200 OK` response.  Responds with an `HTTP 404 Not Found` response if the user is not found.
 
-* `GET /user/{id}/comments` ↦ `populate`
+* `GET /users/{id}/comments` ↦ `populate`
 
     Returns an array of comments associated with user `id`.  Returns `HTTP 200 OK` if that user is found.  Returns an `HTTP 404 Not Found` response if that user is not found.
 
-* `GET /user/{id}/comments/{childId}` ↦ `populate`
+* `GET /users/{id}/comments/{childId}` ↦ `populate`
 
     Returns `HTTP 204 No Content` if comment `childId` is associated with user `id`.  Returns an `HTTP 404 Not Found` response if that user is not found or that comment is not associated with the user.
 
-* `POST /user` ↦ `create`
+* `POST /users` ↦ `create`
 
     Creates a new user using the request payload and returns it with an `HTTP 201 Created` response.
 
-* `POST /user/{id}/comments` ↦ `add`
+* `POST /users/{id}/comments` ↦ `add`
 
     Creates a new comment using the request payload and associates that comment with user `id`.  Returns that comment with an `HTTP 201 Created response`.  If that user is not found, returns an `HTTP 404 Not Found` response.
 
-* `PUT /user/{id}/comments/{childId}` ↦ `add`
+* `PUT /users/{id}/comments/{childId}` ↦ `add`
 
     Associates comment `childId` with user `id`.  Returns an `HTTP 204 No Content` response on success.  If the user or comment are not found, returns an `HTTP 404 Not Found` response.
 
-* `DELETE /user/{id}` ↦ `destroy`
+* `DELETE /users/{id}` ↦ `destroy`
 
     Destroys user `id`.  Returns an `HTTP 204 No Content` response on success.  If the user doesn't exist, returns an `HTTP 404 Not Found` response.
 
-* `DELETE /user/{id}/comment/{childId}` ↦ `remove`
+* `DELETE /users/{id}/comment/{childId}` ↦ `remove`
 
     Removes association between user `id` and comment `childId`.  Returns an `HTTP 204 No Content` response on success.  If the user or comment doesn't exist, returns an `HTTP 404 Not Found` response.
     
-* `PATCH /user/{id}` or `POST /user/{id}` ↦ `update`
+* `PATCH /users/{id}` or `POST /user/{id}` ↦ `update`
     
     Updates user `id` using the request payload (which will typically only contain the attributes to update) and responds with the updated user.  Returns an `HTTP 200 OK` response on success.  If the user doesn't exist, returns an `HTTP 404 Not Found` response.
 
