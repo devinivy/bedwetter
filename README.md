@@ -23,11 +23,11 @@ Suppose users are associated with comments via dogwater/Waterline.  The user mod
 
 * `GET /users` ↦ `find`
 
-    Returns the integer number of users matched with an `HTTP 200 OK` response.
-
-* `GET /users/count` ↦ `find` with count
-
     Returns an array of users with an `HTTP 200 OK` response.
+
+* `GET /users/count` ↦ `find` with `/count`
+
+    Returns the integer number of users matched with an `HTTP 200 OK` response.
 
 * `GET /users/{id}` ↦ `findOne`
 
@@ -37,7 +37,7 @@ Suppose users are associated with comments via dogwater/Waterline.  The user mod
 
     Returns an array of comments associated with user `id`.  Returns `HTTP 200 OK` if that user is found.  Returns an `HTTP 404 Not Found` response if that user is not found.
 
-* `GET /users/{id}/comments/count` ↦ `populate` with count
+* `GET /users/{id}/comments/count` ↦ `populate` with `/count`
 
     Returns the integer number of comments associated with user `id`.  Returns `HTTP 200 OK` if that user is found.  Returns an `HTTP 404 Not Found` response if that user is not found.
 
