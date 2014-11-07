@@ -1,8 +1,9 @@
-bedwetter
-===
+![bedwetter](http://i.imgur.com/Emheg8o.png)
 
 ####Auto-generated, RESTful, CRUDdy route handlers
 to be used with [hapi 7](https://github.com/hapijs/hapi) and its [Waterline](https://github.com/balderdashy/waterline) plugin, [dogwater](https://github.com/devinivy/dogwater).
+
+---
 
 ## What it does
 Bedwetter registers route handlers based upon the `method` and `path` of your route.  It turns them into RESTful API endpoints that automatically interact with the model defined using dogwater.  The route handler is based on one of eight bedwetters:
