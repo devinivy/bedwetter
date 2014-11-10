@@ -115,6 +115,10 @@ These options allow you to act on behalf of the authenticated user.  Typically t
 
     Allows one to specify a prefix to the route path that will be ignored when determining which bedwetter to apply.
 
+* `createdLocation` (string).  Applies to `create` and sometimes to `add`.
+
+    When this set (typically as a route-level option rather than a plugin-level option), a `Location` header will be added to responses with a URL pointing to the created record.  This option will act as the first argument to [util.format](http://nodejs.org/api/util.html#util_util_format_format) when set, and there should be a single placeholder for the created record's id.
+
 * `model` (string). Applies to `findOne`, `find`, `create`, `update`, `destroy`, `add`, `remove`, and `populate`.
 
     Name of the model's Waterline identity.  If not provided as an option, it is deduced from the route path.

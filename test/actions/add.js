@@ -43,7 +43,9 @@ experiment('Add bedwetter', function () {
                 method: 'POST',
                 path: '/zoo/{id}/treats',
                 handler: {
-                    bedwetter: {}
+                    bedwetter: {
+                        createdLocation: false
+                    }
                 }
             }]);
             
@@ -64,6 +66,7 @@ experiment('Add bedwetter', function () {
             expect(res.statusCode).to.equal(201);
             expect(res.result).to.be.an.object;
             expect(res.result.name).to.equal("Fig Newtons");
+            expect(res.headers.location).to.not.exist;
             //console.log(res.statusCode, res.result);
             
             done();

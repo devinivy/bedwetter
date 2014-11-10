@@ -36,7 +36,9 @@ experiment('Create bedwetter', function () {
                 method: 'POST',
                 path: '/zoo',
                 handler: {
-                    bedwetter: {}
+                    bedwetter: {
+                        createdLocation: false
+                    }
                 }
             }]);
             
@@ -57,6 +59,7 @@ experiment('Create bedwetter', function () {
             expect(res.statusCode).to.equal(201);
             expect(res.result).to.be.an.object;
             expect(res.result.name).to.equal("Big Room Studios");
+            expect(res.result.location).to.not.exist;
             //console.log(res.statusCode, res.result);
             
             done();
