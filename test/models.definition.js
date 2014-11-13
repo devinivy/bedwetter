@@ -6,6 +6,10 @@ module.exports = [
         
         attributes: {
             name: 'string',
+            deleted: {
+                type: 'integer',
+                defaultsTo: 0
+            }
             calories: 'integer',
             place: {
                 collection: 'zoo',
