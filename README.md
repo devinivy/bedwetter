@@ -169,6 +169,18 @@ These options allow you to act on behalf of the authenticated user.  Typically t
         
         An array of attribute names to be omitted when creating or updating a record.
 
+* `deletedFlag` (boolean, defaults `false`). Applies to `destroy`.
+
+    Rather than destroying the object, this will simply set a flag on the object using the `deletedAttr` and `deletedValue` options.
+
+* `deletedAttr` (string, defaults `"deleted"`). Applies to `destroy`.
+
+    Model attribute to be updated with the `deletedValue`.
+
+* `deletedValue` (string|int, defaults `1`). Applies to `destroy`.
+
+    Value to be updated on the model attribute specified `deletedAttr` when the `deletedFlag` option is enabled.
+
 
 ## Usage
 Here's a sort of crappy example.
