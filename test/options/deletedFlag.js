@@ -49,6 +49,7 @@ experiment('deletedFlag option', function () {
     
     test('destroys with deleted flag.', function (done) {
         
+        // Call the soft delete route
         server.inject({
             method: 'DELETE',
             url: '/treat/1'
@@ -58,19 +59,18 @@ experiment('deletedFlag option', function () {
             expect(res.result).to.be.null;
             //console.log(res.statusCode, res.result);
             
-            done();
+            // Ensure that the flag was set and the object was NOT removed
+            server.inject({
+                method: 'GET',
+                url: '/treat/1'
+            }, function(res) {
+                
+                expect(res.statusCode).to.equal(200);
+                expect(res.result.deleted).to.equal(1);
+                
+                done();
+            })
         });
-
-        server.inject({
-            method: 'GET',
-            url: '/treat/1'
-        }, function(res) {
-            
-            expect(res.statusCode).to.equal(200);
-            expect(res.result.deleted).to.equal(1);
-            
-            done();
-        })
         
     });
     
