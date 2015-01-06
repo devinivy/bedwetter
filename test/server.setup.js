@@ -4,7 +4,8 @@ var Path = require('path');
 
 module.exports = function(server, pluginOpts, cb) {
         
-        Hoek.assert(server instanceof Hapi.Server, 'You\'re setting up something that is not a hapi server.');
+        // Connection is for late hapi v7
+        Hoek.assert(server instanceof Hapi.Server || server instanceof require('hapi/lib/connection'), 'You\'re setting up something that is not a hapi server.');
         
         if (typeof pluginOpts == 'function') {
             cb = pluginOpts;

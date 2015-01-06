@@ -1,7 +1,7 @@
 {
   "name": "bedwetter",
-  "version": "1.5.0",
-  "description": "Auto-generated, RESTful, CRUDdy route handlers for Waterline models in Hapi",
+  "version": "1.5.1",
+  "description": "Auto-generated, RESTful, CRUDdy route handlers for Waterline models in hapi",
   "main": "index.js",
   "scripts": {
     "test": "make test-cov"
