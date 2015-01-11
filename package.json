@@ -35,7 +35,7 @@
     "pluralize": "~0.0.5"
   },
   "peerDependencies": {
-    "hapi": ">=6.x.x < 8",
+    "hapi": ">=6.x.x",
     "dogwater": ">=0.3 <0.5"
   },
   "devDependencies": {
