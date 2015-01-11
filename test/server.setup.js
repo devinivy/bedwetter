@@ -1,4 +1,5 @@
 var Hapi = require('hapi');
+var Memory = require('sails-memory');
 var Hoek = require('hoek');
 var Path = require('path');
 
@@ -20,7 +21,7 @@ module.exports = function(server, pluginOpts, cb) {
         };
         
         // Setup adapters for testing fixtures.
-        var adapters = { memory: require('sails-memory') };
+        var adapters = { memory: Memory };
         var modelsFile = './models.definition.js';
         var fixturesFile = './models.fixtures.json';
     
@@ -30,11 +31,11 @@ module.exports = function(server, pluginOpts, cb) {
         
         var plugins = [
         {
-           plugin: require('..'),
+           register: require('..'),
            options: pluginOpts
         },
         {
-            plugin: require('dogwater'),
+            register: require('dogwater'),
             options: {
                 connections: connections,
                 adapters: adapters,
@@ -45,7 +46,7 @@ module.exports = function(server, pluginOpts, cb) {
             }
         }];
         
-        server.pack.register(plugins, function (err) {
+        server.register(plugins, function (err) {
             
             cb(err);
         });

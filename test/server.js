@@ -18,7 +18,8 @@ experiment('Server', function () {
     
     // This will be a Hapi server for each test.
     var server = new Hapi.Server();
-
+    server.connection();
+    
     // Setup Hapi server to register the plugin
     before(function(done){
         

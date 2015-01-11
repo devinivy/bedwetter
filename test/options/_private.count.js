@@ -1,6 +1,7 @@
 // Load modules
 var Lab = require('lab');
 var Hapi = require('hapi')
+var Memory = require('sails-memory');
 var Async = require('async')
 var ServerSetup = require('../server.setup.js');
 
@@ -17,6 +18,7 @@ experiment('Count postfix', function () {
     
     // This will be a Hapi server for each test.
     var server = new Hapi.Server();
+    server.connection();
 
     // Setup Hapi server to register the plugin
     before(function(done){
@@ -78,30 +80,7 @@ experiment('Count postfix', function () {
     });
     
     after(function(done) {
-        
-        var orm = server.plugins.dogwater.zoo.waterline;
-        
-        /* Take each connection used by the orm... */
-        Async.each(Object.keys(orm.connections), function(key, cbDone) {
-            
-            var adapter = orm.connections[key]._adapter;
-            
-            /* ... and use the relevant adapter to kill it. */
-            if (typeof adapter.teardown === "function") {
-                
-                adapter.teardown(function(err) {
-                    cbDone(err);
-                });
-                
-            } else {
-                cbDone();
-            }
-            
-        },
-        function (err) {
-            done(err);
-        });
-        
+        Memory.teardown(done);
     });
     
 });

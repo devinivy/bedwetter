@@ -34,7 +34,7 @@ module.exports = function (server, options) {
                 return reply(credentials);
             }
 
-            return reply(null, { credentials: credentials });
+            return reply.continue({ credentials: credentials });
         }
     };
 
