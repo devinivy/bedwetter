@@ -181,6 +181,10 @@ These options allow you to act on behalf of the authenticated user.  Typically t
 
     Value to be updated on the model attribute specified `deletedAttr` when the `deletedFlag` option is enabled.
 
+* `omit` (string|array, defaults `[]`). Applies to `add`, `create`, `find`, `findOne`, `populate`, `update`.
+
+    When returning a record or array of records, the list of fields will not be included in the response per record.  When populating a record association, you may use Hoek.reach style key identifiers to omit deep properties.  If the property holds an array, deep omissions will omit the property from each record in the array.
+
 
 ## Usage
 Here's a sort of crappy example.

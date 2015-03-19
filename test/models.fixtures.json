@@ -1,7 +1,7 @@
 [
   {
     "model": "treat",
-    "items":[
+    "items": [
       {
         "id": 1,
         "name": "French Fries",
@@ -21,7 +21,7 @@
   },
   {
     "model": "zoo",
-    "items":[
+    "items": [
       {
         "id": 1,
         "name": "Portland, ME Zoo"
