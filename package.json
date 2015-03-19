@@ -1,6 +1,6 @@
 {
   "name": "bedwetter",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Auto-generated, RESTful, CRUDdy route handlers for Waterline models in hapi",
   "main": "index.js",
   "scripts": {
