@@ -117,7 +117,7 @@ These options allow you to act on behalf of the authenticated user.  Typically t
 
 * `createdLocation` (string).  Applies to `create` and sometimes to `add`.
 
-    When this set (typically as a route-level option rather than a plugin-level option), a `Location` header will be added to responses with a URL pointing to the created record.  This option will act as the first argument to [util.format](http://nodejs.org/api/util.html#util_util_format_format) when set, and there should be a single placeholder for the created record's id.
+    When this set (typically as a route-level option rather than a plugin-level option), a `Location` header will be added to responses with a URL pointing to the created record.  This option will act as the first argument to [`util.format`](http://nodejs.org/api/util.html#util_util_format_format) when set, and there should be a single placeholder for the created record's id.
 
 * `model` (string). Applies to `findOne`, `find`, `create`, `update`, `destroy`, `add`, `remove`, and `populate`.
 
@@ -183,9 +183,18 @@ These options allow you to act on behalf of the authenticated user.  Typically t
 
 * `omit` (string|array, defaults `[]`). Applies to `add`, `create`, `find`, `findOne`, `populate`, `update`.
 
-    When returning a record or array of records, the list of fields will not be included in the response per record.  When populating a record association, you may use Hoek.reach style key identifiers to omit deep properties.  If the property holds an array, deep omissions will omit the property from each record in the array.
+    When returning a record or array of records, the list of fields will not be included in the response per record.  When populating a record association, you may use [`Hoek.reach`](https://github.com/hapijs/hoek#reachobj-chain-options style key identifiers to omit deep properties.  If the property holds an array, deep omissions will omit the property from each record in the array.
 
+* `pkAttr` (string or `false`, defaults `false`).  Applies to `add`, `destroy`, `findOne`, `populate`, `remove`, `update`.
 
+    This overrides which attribute used for looking-up the primary/parent record.  By default bedwetter uses the model's primary key.  This option can be used to look-up records by a unique identifier other than the primary key.
+    
+    Ex: To look users up by their `username` attribute rather than their numeric primary key `id`, set `pkAttr` to `"username"`.  Then `GET /users/john-doe` will return the user with username `"john-doe"`.
+
+* `childPkAttr` (string or `false`, defaults `false`).  Applies to `add`, `populate`, `remove`.
+
+    This overrides which attribute used for looking-up the secondary/child record.  By default bedwetter uses the model's primary key.  This option can be used to look-up records by a unique identifier other than the primary key.
+    
 ## Usage
 Here's a sort of crappy example.
 
