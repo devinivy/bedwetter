@@ -187,13 +187,13 @@ These options allow you to act on behalf of the authenticated user.  Typically t
 
 * `pkAttr` (string or `false`, defaults `false`).  Applies to `add`, `destroy`, `findOne`, `populate`, `remove`, `update`.
 
-    This overrides which attribute used for looking-up the primary/parent record.  By default bedwetter uses's the model's primary key.  This option can be used to look-up records by a unique identifier other than the primary key.
+    This overrides which attribute used for looking-up the primary/parent record.  By default bedwetter uses the model's primary key.  This option can be used to look-up records by a unique identifier other than the primary key.
     
     Ex: To look users up by their `username` attribute rather than their numeric primary key `id`, set `pkAttr` to `"username"`.  Then `GET /users/john-doe` will return the user with username `"john-doe"`.
 
 * `childPkAttr` (string or `false`, defaults `false`).  Applies to `add`, `populate`, `remove`.
 
-    This overrides which attribute used for looking-up the secondary/child record.  By default bedwetter uses's the model's primary key.  This option can be used to look-up records by a unique identifier other than the primary key.
+    This overrides which attribute used for looking-up the secondary/child record.  By default bedwetter uses the model's primary key.  This option can be used to look-up records by a unique identifier other than the primary key.
     
 ## Usage
 Here's a sort of crappy example.
