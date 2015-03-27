@@ -66,6 +66,14 @@ experiment('FindOne bedwetter', function () {
             expect(res.statusCode).to.equal(200);
             expect(res.result).to.be.an.object;
             expect(res.result.treats).to.not.be.an.array;
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options', 'primaryRecord']);
+            expect(RequestState.action).to.equal('findone');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
             done();
@@ -83,6 +91,14 @@ experiment('FindOne bedwetter', function () {
             expect(res.statusCode).to.equal(200);
             expect(res.result).to.be.an.object;
             expect(res.result.treats).to.be.an.array;
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options', 'primaryRecord']);
+            expect(RequestState.action).to.equal('findone');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
             done();

@@ -60,6 +60,14 @@ experiment('Update bedwetter', function () {
             expect(res.statusCode).to.equal(200);
             expect(res.result).to.be.an.object;
             expect(res.result.name).to.equal("Fried BOreos");
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options', 'primaryRecord']);
+            expect(RequestState.action).to.equal('update');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
             done();
@@ -80,6 +88,14 @@ experiment('Update bedwetter', function () {
             expect(res.statusCode).to.equal(200);
             expect(res.result).to.be.an.object;
             expect(res.result.name).to.equal("Fried Oreos");
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options', 'primaryRecord']);
+            expect(RequestState.action).to.equal('update');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
             done();

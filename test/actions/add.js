@@ -21,7 +21,7 @@ experiment('Add bedwetter', function () {
     // This will be a Hapi server for each test.
     var server = new Hapi.Server();
     server.connection();
-    
+        
     // Setup Hapi server to register the plugin
     before(function(done){
         
@@ -69,6 +69,14 @@ experiment('Add bedwetter', function () {
             expect(res.result).to.be.an.object;
             expect(res.result.name).to.equal("Fig Newtons");
             expect(res.headers.location).to.not.exist;
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options', 'primaryRecord']);
+            expect(RequestState.action).to.equal('add');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
             done();
@@ -85,6 +93,15 @@ experiment('Add bedwetter', function () {
             
             expect(res.statusCode).to.equal(204);
             expect(res.result).to.be.null;
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options', 'primaryRecord', 'secondaryRecord']);
+            expect(RequestState.action).to.equal('add');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.be.an.object;
+            expect(RequestState.secondaryRecord).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
             done();

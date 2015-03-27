@@ -59,6 +59,14 @@ experiment('Populate bedwetter', function () {
             expect(res.result).to.be.an.array;
             expect(res.result).to.have.length(2);
             
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options', 'primaryRecord']);
+            expect(RequestState.action).to.equal('populate');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.be.an.object;
+            
             done();
         })
         
@@ -73,6 +81,15 @@ experiment('Populate bedwetter', function () {
             
             expect(res.statusCode).to.equal(204);
             expect(res.result).to.be.null;
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options', 'primaryRecord', 'secondaryRecord']);
+            expect(RequestState.action).to.equal('populate');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.be.an.object;
+            expect(RequestState.secondaryRecord).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
             done();
@@ -88,6 +105,14 @@ experiment('Populate bedwetter', function () {
         }, function(res) {
             
             expect(res.statusCode).to.equal(404);
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options', 'primaryRecord']);
+            expect(RequestState.action).to.equal('populate');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
             done();

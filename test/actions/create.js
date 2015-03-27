@@ -22,6 +22,7 @@ experiment('Create bedwetter', function () {
     var server = new Hapi.Server();
     server.connection();
 
+    
     // Setup Hapi server to register the plugin
     before(function(done){
         
@@ -47,7 +48,13 @@ experiment('Create bedwetter', function () {
             done();
         });
     });
+    
+    beforeEach(function(done) {
         
+        checkPostHandlerState = undefined;
+        done();
+    });
+    
     test('creates.', function (done) {
         
         server.inject({
@@ -62,6 +69,14 @@ experiment('Create bedwetter', function () {
             expect(res.result).to.be.an.object;
             expect(res.result.name).to.equal("Big Room Studios");
             expect(res.result.location).to.not.exist;
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options']);
+            expect(RequestState.action).to.equal('create');
+            expect(RequestState.options).to.be.an.object;
+            
             //console.log(res.statusCode, res.result);
             
             done();

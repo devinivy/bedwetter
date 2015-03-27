@@ -55,6 +55,13 @@ experiment('Find bedwetter', function () {
             
             expect(res.statusCode).to.equal(200);
             expect(res.result).to.be.an.array;
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options']);
+            expect(RequestState.action).to.equal('find');
+            expect(RequestState.options).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
             done();
