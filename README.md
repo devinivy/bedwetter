@@ -194,7 +194,17 @@ These options allow you to act on behalf of the authenticated user.  Typically t
 * `childPkAttr` (string or `false`, defaults `false`).  Applies to `add`, `populate`, `remove`.
 
     This overrides which attribute used for looking-up the secondary/child record.  By default bedwetter uses the model's primary key.  This option can be used to look-up records by a unique identifier other than the primary key.
-    
+
+
+## Request State
+The bedwetter request state can be accessed on `Request.plugins.bedwetter`.  It it an object containing the following properties:
+
+* `action` (string).  Indicates which one of the eight bedwetter actions was used.  It is one of `find`, `findone`, `update`, `create`, `destroy`, `populate`, `add`, or `remove`.
+* `options` (object).  These are active bedwetter options used for the request.  If any hooks modified the options, that will be reflected here. 
+* `primaryRecord` (Waterline model).  This provides access to any primary record associated with this request.  This will not be set if there is no primary record.
+* `secondaryRecord` (Waterline model).  This provides access to any secondary record associated with this request.  This will not be set if there is no secondary record.
+
+
 ## Usage
 Here's a sort of crappy example.
 
