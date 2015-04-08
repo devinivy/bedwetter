@@ -14,7 +14,7 @@ Bedwetter registers route handlers based upon the `method` and `path` of your ro
 - `GET` is used for `find`, `findOne`, and `populate` (get related records or check an association)
 - `DELETE` is used for `destroy` and `remove` (remove a record from a relation)
 
-For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#/documentation/reference/blueprint-api) for info about parameters for the bedwetters.  A portion of the code is adapted from this SailsJs hook.
+For now, see SailsJs's [documentation on Blueprints](http://sailsjs.org/#!/documentation/reference/blueprint-api) for info about parameters for the bedwetters.  A portion of the code is adapted from this SailsJs hook.
 
 Bedwetter also allows you to manage resources/records with owners.  There are options to act on behalf of a user via hapi authentication.  You can set owners automatically on new records, only display records when owned by the authenticated user, and make bedwetters behave like the primary record is the authenticated user.
 
