@@ -49,12 +49,6 @@ experiment('Create bedwetter', function () {
         });
     });
     
-    beforeEach(function(done) {
-        
-        checkPostHandlerState = undefined;
-        done();
-    });
-    
     test('creates.', function (done) {
         
         server.inject({
