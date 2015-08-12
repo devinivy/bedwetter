@@ -17,11 +17,21 @@ module.exports = function(server, pluginOpts, cb) {
         var connections = {
             'testing': {
                 adapter: 'memory'
+            },
+            'failing': {
+                adapter: 'error'
             }
         };
         
         // Setup adapters for testing fixtures.
-        var adapters = { memory: Memory };
+        var adapters = {
+            memory: Memory,
+            error: {
+                find: function(a1, a2, a3, cb) {
+                    cb(new Error('Adapter find error.'))
+                }
+            }
+        };
         var modelsFile = './models.definition.js';
         var fixturesFile = './models.fixtures.json';
     

@@ -46,5 +46,11 @@ module.exports = [
                 via: 'animalOwner'
             }
         }
+    },
+    {
+        identity: 'failures',
+        connection: 'failing',
+        
+        attributes: {}
     }
 ];

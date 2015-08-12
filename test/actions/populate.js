@@ -41,6 +41,13 @@ experiment('Populate bedwetter', function () {
                 handler: {
                     bedwetter: {}
                 }
+            },
+            {
+                method: 'GET',
+                path: '/zoo/{id}/computers/{childId?}',
+                handler: {
+                    bedwetter: {}
+                }
             }]);
             
             done();
@@ -119,7 +126,7 @@ experiment('Populate bedwetter', function () {
         })
         
     });
-    
+
     after(function(done) {
         Memory.teardown(done);
     });

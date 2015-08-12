@@ -39,9 +39,9 @@
     "dogwater": ">=0.3 <0.5"
   },
   "devDependencies": {
-    "hapi": "~7.x.x",
-    "dogwater": "^0.4.x",
-    "sails-memory": "^0.10.x",
+    "hapi": "8.x.x",
+    "dogwater": "0.4.x",
+    "sails-memory": "0.10.x",
     "lab": "4.x.x",
     "async": "0.9.0"
   },
