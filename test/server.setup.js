@@ -29,6 +29,9 @@ module.exports = function(server, pluginOpts, cb) {
             error: {
                 find: function(a1, a2, a3, cb) {
                     cb(new Error('Adapter find error.'))
+                },
+                create: function(a1, a2, a3, cb) {
+                    cb(new Error('Adapter create error.'))
                 }
             }
         };
@@ -37,7 +40,7 @@ module.exports = function(server, pluginOpts, cb) {
     
         // Setup 
         server.auth.scheme('custom', require('./auth.scheme.js'));
-        server.auth.strategy('default', 'custom', false, { animals: { Doggie: {id:1}, Kitty: {id:2} } });
+        server.auth.strategy('default', 'custom', false, { animals: { Doggie: {id:1}, Kitty: {id:2}, Empty: {id: null} } });
         
         var plugins = [
         {

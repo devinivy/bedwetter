@@ -38,7 +38,7 @@ experiment('Find bedwetter', function () {
                     bedwetter: {}
                 }
             },
-            { // find / jsonp
+            { // find
                 method: 'GET',
                 path: '/failures',
                 handler: {

@@ -18,11 +18,12 @@ var test = lab.test;
 
 experiment('FindOne bedwetter', function () {
     
-    // This will be a Hapi server for each test.
-    var server = new Hapi.Server();;
+    // This will be a hapi server for each test.
+    var server = new Hapi.Server();
+    var errors = [];
     server.connection();
 
-    // Setup Hapi server to register the plugin
+    // Setup hapi server to register the plugin
     before(function(done){
         
         ServerSetup(server, {
@@ -50,7 +51,21 @@ experiment('FindOne bedwetter', function () {
                 handler: {
                     bedwetter: {}
                 }
+            },
+            { // findOne
+                method: 'GET',
+                path: '/failures/{id}',
+                handler: {
+                    bedwetter: {}
+                }
             }]);
+            
+            server.on('request-error', function (request, error) {
+                errors.push({
+                    request: request,
+                    error: error
+                });
+            });
             
             done();
         });
@@ -103,6 +118,25 @@ experiment('FindOne bedwetter', function () {
             
             done();
         })
+        
+    });
+    
+    test('wraps Waterline errors.', function (done) {
+    
+        server.inject({
+            method: 'GET',
+            url: '/failures/1'
+        }, function(res) {
+
+            expect(res.statusCode).to.equal(500);
+            expect(res.result.message).to.equal('An internal server error occurred');
+
+            expect(errors).to.have.length(1);
+            expect(errors[0].request).to.equal(res.request);
+            expect(errors[0].error.message).to.contain('Adapter find error.');
+
+            done();
+        });
         
     });
     

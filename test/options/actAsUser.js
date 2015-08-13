@@ -195,6 +195,18 @@ experiment('actAsUser option', function () {
                 handler: {
                     bedwetter: {}
                 }
+            },
+            { // Get a particular animal (user)
+                method: 'GET',
+                path: '/animal',
+                config: {
+                    auth: {
+                        strategy: 'default'
+                    }
+                },
+                handler: {
+                    bedwetter: {}
+                }
             }]);
             
             done();
@@ -227,7 +239,7 @@ experiment('actAsUser option', function () {
             url: '/animal/treats',
         }, function(res) {
             
-            expect(res.statusCode).to.equal(401);
+            expect(res.statusCode).to.equal(403);
             expect(res.result).to.be.an.object;
             //console.log(res.statusCode, res.result);
             
@@ -269,7 +281,23 @@ experiment('actAsUser option', function () {
         });
         
     });
-    
+
+    test('(findOne) getting authenticated user, reports not found if user id is empty.', function (done) {
+
+        server.inject({
+            method: 'GET',
+            url: '/animal',
+            headers: { authorization: 'Custom Empty' }
+        }, function(res) {
+            
+            expect(res.statusCode).to.equal(403);
+            //console.log(res.statusCode, res.result);
+            
+            done();
+        });
+        
+    });
+
     test('(find) with requireOwner and an ownerAttr, only returns a list of records owned by the user.', function (done) {
         
         server.inject({

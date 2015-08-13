@@ -18,19 +18,16 @@ var test = lab.test;
 
 experiment('Create bedwetter', function () {
     
-    // This will be a Hapi server for each test.
+    // This will be a hapi server for each test.
     var server = new Hapi.Server();
+    var errors = [];
     server.connection();
 
     
-    // Setup Hapi server to register the plugin
+    // Setup hapi server to register the plugin
     before(function(done){
         
-        ServerSetup(server, {
-            userModel: 'animals',
-            userIdProperty: 'animal.id',
-            userUrlPrefix: '/animal'
-        }, function(err) {
+        ServerSetup(server, {}, function(err) {
             
             if (err) done(err);
             
@@ -43,8 +40,22 @@ experiment('Create bedwetter', function () {
                         createdLocation: false
                     }
                 }
+            },
+            { // create
+                method: 'POST',
+                path: '/failures',
+                handler: {
+                    bedwetter: {}
+                }
             }]);
-            
+
+            server.on('request-error', function (request, error) {
+                errors.push({
+                    request: request,
+                    error: error
+                });
+            });
+
             done();
         });
     });
@@ -74,7 +85,25 @@ experiment('Create bedwetter', function () {
             //console.log(res.statusCode, res.result);
             
             done();
-        })
+        });
+    });
+
+    test('wraps Waterline errors.', function (done) {
+    
+        server.inject({
+            method: 'POST',
+            url: '/failures'
+        }, function(res) {
+
+            expect(res.statusCode).to.equal(500);
+            expect(res.result.message).to.equal('An internal server error occurred');
+
+            expect(errors).to.have.length(1);
+            expect(errors[0].request).to.equal(res.request);
+            expect(errors[0].error.message).to.contain('Adapter create error.');
+
+            done();
+        });
         
     });
     
