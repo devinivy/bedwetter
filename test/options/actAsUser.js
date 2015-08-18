@@ -79,6 +79,22 @@ experiment('actAsUser option', function () {
                     }
                 }
             },
+            { // Check record association
+                method: 'GET',
+                path: '/treat/{id}/place/{childId}',
+                config: {
+                    auth: {
+                        strategy: 'default'
+                    }
+                },
+                handler: {
+                    bedwetter: {
+                        requireOwner: true,
+                        childOwnerAttr: false,
+                        ownerAttr: 'animalOwner'
+                    }
+                }
+            },
             { // Add record association
                 method: 'PUT',
                 path: '/zoo/{id}/treats/{childId}',
@@ -315,8 +331,25 @@ experiment('actAsUser option', function () {
         });
         
     });
+
     
-    test('(populate) with requireOwner and childOwnerAttr, will not display info about record association if bad credentials.', function (done) {
+    test('(populate) with requireOwner and childOwnerAttr, will not display info about record association if bad credentials for parent.', function (done) {
+        
+        server.inject({
+            method: 'GET',
+            url: '/treat/2/place/2',
+            headers: { authorization: 'Custom Kitty' }
+        }, function(res) {
+
+            expect(res.statusCode).to.equal(401);
+            expect(res.result).to.be.an.object;
+
+            done();
+        });
+        
+    });
+
+    test('(populate) with requireOwner and childOwnerAttr, will not display info about record association if bad credentials for child.', function (done) {
         
         server.inject({
             method: 'GET',

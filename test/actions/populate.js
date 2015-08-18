@@ -27,9 +27,7 @@ experiment('Populate bedwetter', function () {
     before(function(done){
         
         ServerSetup(server, {
-            userModel: 'animals',
             userIdProperty: 'animal.id',
-            userUrlPrefix: '/animal'
         }, function(err) {
             
             if (err) done(err);
@@ -38,13 +36,6 @@ experiment('Populate bedwetter', function () {
             { // populates
                 method: 'GET',
                 path: '/zoo/{id}/treats/{childId?}',
-                handler: {
-                    bedwetter: {}
-                }
-            },
-            {
-                method: 'GET',
-                path: '/zoo/{id}/computers/{childId?}',
                 handler: {
                     bedwetter: {}
                 }
@@ -108,7 +99,7 @@ experiment('Populate bedwetter', function () {
         
         server.inject({
             method: 'GET',
-            url: '/zoo/1/treats/666',
+            url: '/zoo/2/treats/1',
         }, function(res) {
             
             expect(res.statusCode).to.equal(404);
@@ -120,10 +111,34 @@ experiment('Populate bedwetter', function () {
             expect(RequestState.action).to.equal('populate');
             expect(RequestState.options).to.be.an.object;
             expect(RequestState.primaryRecord).to.be.an.object;
+            expect(RequestState.secondaryRecord).to.not.exist();
             //console.log(res.statusCode, res.result);
             
             done();
-        })
+        });
+        
+    });
+
+    test('serves 404 when parent not found.', function (done) {
+        
+        server.inject({
+            method: 'GET',
+            url: '/zoo/42/treats/1',
+        }, function(res) {
+            
+            expect(res.statusCode).to.equal(404);
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options']);
+            expect(RequestState.action).to.equal('populate');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.not.exist();
+            //console.log(res.statusCode, res.result);
+            
+            done();
+        });
         
     });
 

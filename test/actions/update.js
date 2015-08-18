@@ -102,7 +102,34 @@ experiment('Update bedwetter', function () {
         })
         
     });
-    
+
+    test('responds with 404 if there\'s no matching record to update.', function (done) {
+        
+        server.inject({
+            method: 'PATCH',
+            url: '/treat/42',
+            payload: {
+                name: "Fried Oreos"
+            }
+        }, function(res) {
+            
+            expect(res.statusCode).to.equal(404);
+            expect(res.result).to.be.an.object;
+            
+            // Make sure the bedwetter sets request state
+            var RequestState = res.request.plugins.bedwetter;
+            expect(RequestState).to.be.an.object;
+            expect(RequestState).to.have.keys(['action', 'options']);
+            expect(RequestState.action).to.equal('update');
+            expect(RequestState.options).to.be.an.object;
+            expect(RequestState.primaryRecord).to.not.exist();
+            //console.log(res.statusCode, res.result);
+            
+            done();
+        })
+        
+    });
+
     after(function(done) {
         Memory.teardown(done);
     });
