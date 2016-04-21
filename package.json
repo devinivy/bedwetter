@@ -1,6 +1,6 @@
 {
   "name": "bedwetter",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "Auto-generated, RESTful, CRUDdy route handlers for Waterline models in hapi",
   "main": "index.js",
   "scripts": {
@@ -35,12 +35,12 @@
     "pluralize": "~0.0.5"
   },
   "peerDependencies": {
-    "hapi": ">=6.x.x",
-    "dogwater": ">=0.3 <0.5"
+    "hapi": "13.x.x",
+    "dogwater": "^1.1.x"
   },
   "devDependencies": {
-    "hapi": "~7.x.x",
-    "dogwater": "^0.4.x",
+    "hapi": "13.x.x",
+    "dogwater": "^1.1.x",
     "sails-memory": "^0.10.x",
     "lab": "4.x.x",
     "async": "0.9.0"
