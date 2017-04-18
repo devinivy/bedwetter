@@ -1,6 +1,6 @@
 ![bedwetter](http://i.imgur.com/Emheg8o.png)
 
-####Auto-generated, RESTful, CRUDdy route handlers
+#### Auto-generated, RESTful, CRUDdy route handlers
 to be used with [hapi 8](https://github.com/hapijs/hapi) (and 7) and its [Waterline](https://github.com/balderdashy/waterline) plugin, [dogwater](https://github.com/devinivy/dogwater).
 
 ---
